@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Outlet } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
@@ -14,7 +14,10 @@ import {
 	AiOutlineLogout,
 	AiOutlineUserAdd,
 	AiFillDashboard,
+	AiFillHome,
+	AiFillShop,
 } from 'react-icons/ai'
+
 const TopNav = () => {
 	const isLoggedIn = useSelector((state) => state.auth.loggedIn)
 	const user = useSelector((state) => state.auth.user)
@@ -33,63 +36,86 @@ const TopNav = () => {
 	}
 
 	return (
-		<Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
-			<Container>
-				<Navbar.Brand
-					onClick={() => navigate('/')}
-					style={{ cursor: 'pointer' }}>
-					<img
-						src='https://res.cloudinary.com/vinodkotagiri/image/upload/v1666037703/My%20Websites%20assets/portfolio-projects/Bizbook/Bizbook.png'
-						alt='logo'
-						height={48}
-					/>
-				</Navbar.Brand>
-				<Navbar.Toggle aria-controls='responsive-navbar-nav' />
-				<Navbar.Collapse
-					id='responsive-navbar-nav'
-					className='justify-content-end me-5'>
-					{!isLoggedIn && (
+		<>
+			<Navbar
+				collapseOnSelect
+				expand='lg'
+				bg='dark'
+				variant='dark'
+				sticky='top'>
+				<Container>
+					<Navbar.Brand
+						onClick={() => navigate('/')}
+						style={{ cursor: 'pointer' }}>
+						<img
+							src='https://res.cloudinary.com/vinodkotagiri/image/upload/v1666037703/My%20Websites%20assets/portfolio-projects/Bizbook/Bizbook.png'
+							alt='logo'
+							height={48}
+						/>
+					</Navbar.Brand>
+					<Navbar.Toggle aria-controls='responsive-navbar-nav' />
+					<Navbar.Collapse
+						id='responsive-navbar-nav'
+						className='justify-content-end me-5'>
 						<Nav>
-							<Nav.Link onClick={() => navigate('/login')}>
-								<AiOutlineLogin />
-								&nbsp;Login
+							<Nav.Link onClick={() => navigate('/')}>
+								<AiFillHome />
+								&nbsp;Home
 							</Nav.Link>
-							<Nav.Link onClick={() => navigate('/register')}>
-								<AiOutlineUserAdd />
-								&nbsp;Register
+							<Nav.Link onClick={() => navigate('/shop')}>
+								<AiFillShop />
+								&nbsp;Shop
 							</Nav.Link>
 						</Nav>
-					)}
-					{isLoggedIn && (
-						<Nav>
-							<NavDropdown id='nav-dropdown-dark-example' title={user.name}>
-								<NavDropdown.Item
-									onClick={() => navigate('/dashboard')}
-									style={{
-										display: 'flex',
-										alignItems: 'center',
-										gap: '1rem',
-									}}>
-									<AiFillDashboard size={24} />
-									Dashboard
-								</NavDropdown.Item>
-								<Dropdown.Divider />
-								<NavDropdown.Item
-									onClick={handleLogout}
-									style={{
-										display: 'flex',
-										alignItems: 'center',
-										gap: '1rem',
-									}}>
-									<AiOutlineLogout size={24} />
-									Logout
-								</NavDropdown.Item>
-							</NavDropdown>
-						</Nav>
-					)}
-				</Navbar.Collapse>
-			</Container>
-		</Navbar>
+						{!isLoggedIn && (
+							<Nav>
+								<Nav.Link onClick={() => navigate('/login')}>
+									<AiOutlineLogin />
+									&nbsp;Login
+								</Nav.Link>
+								<Nav.Link onClick={() => navigate('/register')}>
+									<AiOutlineUserAdd />
+									&nbsp;Register
+								</Nav.Link>
+							</Nav>
+						)}
+						{isLoggedIn && (
+							<Nav>
+								<NavDropdown
+									id='nav-dropdown-dark-example'
+									title={`${
+										user.name.charAt(0).toUpperCase() +
+										user.name.substr(1, user.name.length)
+									}`}>
+									<NavDropdown.Item
+										onClick={() => navigate('/dashboard')}
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+											gap: '1rem',
+										}}>
+										<AiFillDashboard size={24} />
+										Dashboard
+									</NavDropdown.Item>
+									<Dropdown.Divider />
+									<NavDropdown.Item
+										onClick={handleLogout}
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+											gap: '1rem',
+										}}>
+										<AiOutlineLogout size={24} />
+										Logout
+									</NavDropdown.Item>
+								</NavDropdown>
+							</Nav>
+						)}
+					</Navbar.Collapse>
+				</Container>
+			</Navbar>
+			<Outlet />
+		</>
 	)
 }
 

@@ -7,6 +7,7 @@ import DashboardPage from './pages/page.dashboard'
 import RegisterPage from './pages/page.register'
 import CreateCategoryPage from './pages/page.createcategory'
 import CreateProductPage from './pages/page.createproduct'
+import ShopPage from './pages/page.shopPage'
 import { Toaster } from 'react-hot-toast'
 import { useEffect } from 'react'
 import { loginUser } from './features/authSlice'
@@ -21,22 +22,27 @@ const App = () => {
 	}, [])
 
 	return (
-		<div>
-			<TopNav />
+		<>
 			<Routes>
-				<Route path='/' element={<HomePage />} />
-				<Route path='*' element={<Navigate to='/' />} />
-				<Route path='/register' element={<RegisterPage />} />
-				<Route path='/login' element={<LoginPage />} />
-				<Route path='/dashboard' element={<DashboardPage />} />
-				<Route
-					path='/:userId/create-category'
-					element={<CreateCategoryPage />}
-				/>
-				<Route path='/:userId/create-product' element={<CreateProductPage />} />
+				<Route path='/' element={<TopNav />}>
+					<Route index element={<HomePage />} />
+					<Route path='*' element={<Navigate to='/' />} />
+					<Route path='register' element={<RegisterPage />} />
+					<Route path='login' element={<LoginPage />} />
+					<Route path='dashboard' element={<DashboardPage />} />
+					<Route path='shop' element={<ShopPage />} />
+					<Route
+						path=':userId/create-category'
+						element={<CreateCategoryPage />}
+					/>
+					<Route
+						path=':userId/create-product'
+						element={<CreateProductPage />}
+					/>
+				</Route>
 			</Routes>
 			<Toaster position='top-right' reverseOrder={false} />
-		</div>
+		</>
 	)
 }
 
