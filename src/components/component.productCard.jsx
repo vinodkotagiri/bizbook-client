@@ -12,15 +12,17 @@ const ProductCard = ({ product }) => {
 				style={{
 					width: '18rem',
 					backgroundColor: '#389fbc80',
+					height: '35rem',
+					maxHeight: '35rem',
 				}}
 				className='my-1 '>
-				<CardHeader>
-					<h3>{product.name}</h3>
-				</CardHeader>
 				<ShowImage item={product} url='product' />
+				<CardHeader>
+					<h6 style={{ fontWeight: 'bold' }}>{product.name}</h6>
+				</CardHeader>
 				<Card.Body>{truncate(product.description, 50)}</Card.Body>
 				<Card.Footer>
-					<h4 className='text-muted px-2 my-2'>₹{product.price}</h4>
+					<h4 className='px-2 mx-3'>Price: ₹{product.price}</h4>
 					<Container className='d-flex justify-content-between align-items-ceter mb-3'>
 						<Button variant='outline-primary' style={{ width: '6rem' }}>
 							View
