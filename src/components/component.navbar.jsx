@@ -7,6 +7,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import Dropdown from 'react-bootstrap/Dropdown'
 import { useSelector, useDispatch } from 'react-redux'
 import { logoutUser } from '../features/authSlice'
+import { Badge } from 'react-bootstrap'
 import api from '../services/axios'
 import toast from 'react-hot-toast'
 import {
@@ -17,10 +18,11 @@ import {
 	AiFillHome,
 	AiFillShop,
 } from 'react-icons/ai'
-
+import { GiShoppingCart } from 'react-icons/gi'
 const TopNav = () => {
 	const isLoggedIn = useSelector((state) => state.auth.loggedIn)
 	const user = useSelector((state) => state.auth.user)
+	const cart = useSelector((state) => state.cart.items)
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const handleLogout = async () => {
@@ -28,7 +30,7 @@ const TopNav = () => {
 			.get('/signout')
 			.then((response) => {
 				dispatch(logoutUser())
-				localStorage.removeItem('auth')
+				localStorage.clear()
 				toast.success('Successfully logged out')
 				navigate('/')
 			})
@@ -82,6 +84,7 @@ const TopNav = () => {
 						{isLoggedIn && (
 							<Nav>
 								<NavDropdown
+									className='d-flex align-items-center'
 									id='nav-dropdown-dark-example'
 									title={`${
 										user.name.charAt(0).toUpperCase() +
@@ -109,6 +112,14 @@ const TopNav = () => {
 										Logout
 									</NavDropdown.Item>
 								</NavDropdown>
+								<Nav>
+									<Nav.Link onClick={() => navigate('/cart')}>
+										<GiShoppingCart size={36} />
+										<sup>
+											<Badge bg='danger'>{cart.length}</Badge>
+										</sup>
+									</Nav.Link>
+								</Nav>
 							</Nav>
 						)}
 					</Navbar.Collapse>
