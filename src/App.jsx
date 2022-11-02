@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import ProductPage from './pages/page.product'
 import CartPage from './pages/page.cart'
 import CheckoutPage from './pages/page.checkout'
+import OrdersPage from './pages/page.orders'
 
 const App = () => {
 	const dispatch = useDispatch()
@@ -40,6 +41,7 @@ const App = () => {
 					<Route path='shop' element={<ShopPage />} />
 					<Route path='cart' element={<CartPage />} />
 					<Route path='checkout' element={<CheckoutPage />} />
+					<Route path=':userId/orders' element={<OrdersPage />} />
 					<Route
 						path=':userId/create-category'
 						element={<CreateCategoryPage />}

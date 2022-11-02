@@ -91,6 +91,13 @@ const ProductPage = () => {
 												width: '18rem',
 												height: '5rem',
 												fontWeight: 'bold',
+											}}
+											onClick={() => {
+												if (!user) navigate('/login')
+												else {
+													dispatch(addItem(product))
+													navigate('/cart')
+												}
 											}}>
 											Buy Now
 										</Button>

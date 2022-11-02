@@ -7,7 +7,11 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Container from 'react-bootstrap/Container'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { MdCategory, MdOutlineAddCircle } from 'react-icons/md'
+import {
+	MdCategory,
+	MdOutlineAddCircle,
+	MdOutlineVisibility,
+} from 'react-icons/md'
 const AdminDashboard = () => {
 	const user = useSelector((state) => state.auth.user)
 	const isLoggedIn = useSelector((state) => state.auth.loggedIn)
@@ -39,6 +43,14 @@ const AdminDashboard = () => {
 									onClick={() => navigate(`/${user._id}/create-product`)}>
 									<MdOutlineAddCircle size={25} />
 									&emsp;Add Product
+								</ListGroup.Item>
+							</ListGroup>
+							<ListGroup>
+								<ListGroup.Item
+									style={{ cursor: 'pointer' }}
+									onClick={() => navigate(`/${user._id}/orders`)}>
+									<MdOutlineVisibility size={25} />
+									&emsp;View Orders
 								</ListGroup.Item>
 							</ListGroup>
 						</Card>

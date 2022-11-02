@@ -3,7 +3,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import TitleHeader from '../components/component.titleHeader'
 import DropIn from 'braintree-web-drop-in-react'
 import api from '../services/axios'
-import { Button, Container } from 'react-bootstrap'
+import {
+	Button,
+	Col,
+	Container,
+	Form,
+	FormControl,
+	FormGroup,
+	FormLabel,
+	Row,
+} from 'react-bootstrap'
 import Loader from '../components/component.loader'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
@@ -17,6 +26,8 @@ const CheckoutPage = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const loggedIn = useSelector((state) => state.auth.loggedIn)
+	const [order, setOrder] = useState(null)
+	const products = useSelector((state) => state.cart.items)
 	const [data, setData] = useState({
 		instance: {},
 		clientToken: null,
@@ -41,6 +52,20 @@ const CheckoutPage = () => {
 		if (!loggedIn) navigate('/login')
 		if (user && token) getClientToken(token, user._id)
 	}, [token, user])
+	const createOrder = (orderData, token, user) => {
+		if (token && user) {
+			api
+				.post(
+					`/order/create/${user._id}`,
+					{ order: orderData },
+					{
+						headers: { Authorization: 'Bearer ' + token },
+					}
+				)
+				.then((response) => setOrder(response.data))
+				.catch((error) => console.log(error))
+		}
+	}
 	const buy = async () => {
 		const { nonce } = await data.instance.requestPaymentMethod()
 		const amount = checkoutTotal
@@ -61,11 +86,19 @@ const CheckoutPage = () => {
 				setVisible(false)
 				setData({ ...data, success: response.data.success })
 				toast.success('Thank you! Your payment was successful')
+				const orderData = {
+					products: products,
+					transaction_id: response.data.transaction.id,
+					amount: response.data.transaction.amount,
+					address: data.address,
+				}
+				createOrder(orderData, token, user)
 				dispatch(clearCart())
 				navigate('/cart')
 			})
 			.catch((err) => console.log(err))
 	}
+
 	return (
 		<Fragment>
 			<TitleHeader title='Checkout' description='Continue to payment' />
@@ -77,29 +110,47 @@ const CheckoutPage = () => {
 				<Container
 					className='d-flex flex-column justify-content-center align-items-center'
 					style={{ height: '50vh' }}>
-					<DropIn
-						options={{
-							authorization: data.clientToken,
-							paypal: { flow: 'vault' },
-						}}
-						onInstance={(instance) => (data.instance = instance)}
-					/>
-					{visible && (
-						<Container className='d-flex justify-content-center gap-3'>
-							<Button
-								className='btn-secondary'
-								onClick={() => navigate('/cart')}
-								style={{ width: '5rem' }}>
-								Cancel
-							</Button>
-							<Button
-								className='btn-success'
-								onClick={buy}
-								style={{ width: '5rem' }}>
-								Pay
-							</Button>
-						</Container>
-					)}
+					<Row>
+						<Col>
+							<Form>
+								<FormGroup>
+									<FormLabel className='text-muted'>Delivery Address</FormLabel>
+									<FormControl
+										as='textarea'
+										style={{ height: '10rem', resize: 'none' }}
+										onChange={(e) =>
+											setData({ ...data, address: e.target.value })
+										}
+									/>
+								</FormGroup>
+							</Form>
+						</Col>
+						<Col>
+							<DropIn
+								options={{
+									authorization: data.clientToken,
+									paypal: { flow: 'vault' },
+								}}
+								onInstance={(instance) => (data.instance = instance)}
+							/>
+							{visible && (
+								<Container className='d-flex justify-content-center gap-3'>
+									<Button
+										className='btn-secondary'
+										onClick={() => navigate('/cart')}
+										style={{ width: '5rem' }}>
+										Cancel
+									</Button>
+									<Button
+										className='btn-success'
+										onClick={buy}
+										style={{ width: '5rem' }}>
+										Pay
+									</Button>
+								</Container>
+							)}
+						</Col>
+					</Row>
 				</Container>
 			)}
 		</Fragment>
