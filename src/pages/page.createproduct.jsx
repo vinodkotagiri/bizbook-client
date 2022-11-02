@@ -85,7 +85,7 @@ const CreateProductPage = () => {
 	}
 	return (
 		<Fragment>
-			<TitleHeader title='Create Category' description='Add a category' />
+			<TitleHeader title='Create Product' description='Add a product' />
 			<Container className='mt-5'>
 				<Form>
 					<Row>
@@ -127,7 +127,7 @@ const CreateProductPage = () => {
 									aria-label='category'
 									name='category'
 									onChange={handleChange}>
-									<option value='-1' selected>
+									<option value='-1' default>
 										Select a category
 									</option>
 									{categories.map((category) => (
@@ -167,7 +167,7 @@ const CreateProductPage = () => {
 									aria-label='shipping'
 									name='shipping'
 									onChange={handleChange}>
-									<option value='-1' selected>
+									<option value='-1' default>
 										Select Shipping
 									</option>
 									<option value='0'>No</option>

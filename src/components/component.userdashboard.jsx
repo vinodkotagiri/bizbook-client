@@ -6,17 +6,17 @@ import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Container from 'react-bootstrap/Container'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaShoppingCart, FaUserEdit } from 'react-icons/fa'
+import { Table } from 'react-bootstrap'
 const UserDashboard = () => {
 	const user = useSelector((state) => state.auth.user)
 	const isLoggedIn = useSelector((state) => state.auth.loggedIn)
 	const navigate = useNavigate()
 	useEffect(() => {
-		console.log(isLoggedIn)
 		if (!isLoggedIn) navigate('/login')
-	}, [])
-
+	}, [user])
+	console.log(user.history)
 	return (
 		<Fragment>
 			<TitleHeader title='Dashboard' description='user dashboard' />
@@ -36,7 +36,7 @@ const UserDashboard = () => {
 								</ListGroup.Item>
 								<ListGroup.Item
 									style={{ cursor: 'pointer' }}
-									onClick={() => navigate('/')}>
+									onClick={() => navigate(`/update/${user._id}`)}>
 									<FaUserEdit size={25} />
 									&emsp;Update Profile
 								</ListGroup.Item>
@@ -71,7 +71,36 @@ const UserDashboard = () => {
 							</Card.Header>
 							<ListGroup variant='flush'>
 								<ListGroup.Item>
-									{user?.history === [] ? user?.history : 'No Purchases'}
+									{user?.history?.length > 0 ? (
+										<Container>
+											{user?.history.map((prod, index) =>
+												prod.map((p, i) => (
+													<Table>
+														<thead>
+															<th>#</th>
+															<th>Order ID</th>
+															<th>Transaction ID</th>
+															<th>Quantity</th>
+														</thead>
+														<tbody>
+															<tr>
+																<td>{i + 1}</td>
+																<td className='text-muted'>
+																	<Link to={`/product/${p._id}`}>{p._id}</Link>
+																</td>
+																<td className='text-muted'>
+																	{p.transaction_id}
+																</td>
+																<td className='text-muted'>{p.quantity}</td>
+															</tr>
+														</tbody>
+													</Table>
+												))
+											)}
+										</Container>
+									) : (
+										'No Purchases'
+									)}
 								</ListGroup.Item>
 							</ListGroup>
 						</Card>

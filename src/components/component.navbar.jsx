@@ -30,7 +30,6 @@ const TopNav = () => {
 			.get('/signout')
 			.then((response) => {
 				dispatch(logoutUser())
-				localStorage.clear()
 				toast.success('Successfully logged out')
 				navigate('/')
 			})

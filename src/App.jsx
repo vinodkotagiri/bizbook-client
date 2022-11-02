@@ -12,22 +12,31 @@ import { Toaster } from 'react-hot-toast'
 import { useEffect } from 'react'
 import { loginUser } from './features/authSlice'
 import { addItem } from './features/cartSlice'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import ProductPage from './pages/page.product'
 import CartPage from './pages/page.cart'
 import CheckoutPage from './pages/page.checkout'
 import OrdersPage from './pages/page.orders'
+import ProfileUpdatePage from './pages/page.profileUpdate'
+import ProductsPage from './pages/page.products'
+import UpdateProductPage from './pages/page.updateProduct'
 
 const App = () => {
 	const dispatch = useDispatch()
-	const cart = useSelector((state) => state.cart.items)
 	useEffect(() => {
-		if (localStorage.getItem('auth')) {
-			dispatch(loginUser(JSON.parse(localStorage.getItem('auth'))))
+		if (localStorage.getItem('user') && localStorage.getItem('token')) {
+			const user = JSON.parse(localStorage.getItem('user'))
+			const token = JSON.parse(localStorage.getItem('token'))
+			dispatch(
+				loginUser({
+					user,
+					token,
+				})
+			)
 		}
 		if (localStorage.getItem('cart'))
 			dispatch(addItem(JSON.parse(localStorage.getItem('cart'))))
-	}, [])
+	}, [dispatch])
 
 	return (
 		<>
@@ -42,6 +51,12 @@ const App = () => {
 					<Route path='cart' element={<CartPage />} />
 					<Route path='checkout' element={<CheckoutPage />} />
 					<Route path=':userId/orders' element={<OrdersPage />} />
+					<Route path='update/:userId' element={<ProfileUpdatePage />} />
+					<Route path=':adminId/products' element={<ProductsPage />} />
+					<Route
+						path=':adminId/product/update/:productId'
+						element={<UpdateProductPage />}
+					/>
 					<Route
 						path=':userId/create-category'
 						element={<CreateCategoryPage />}

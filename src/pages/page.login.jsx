@@ -49,7 +49,6 @@ const LoginPage = () => {
 			.post('/signin', { email: email.toLowerCase(), password: password })
 			.then((response) => {
 				dispatch(loginUser(response.data))
-				localStorage.setItem('auth', JSON.stringify(response.data))
 				setTimeout(() => {
 					toast.success('Login successful')
 					navigate('/')

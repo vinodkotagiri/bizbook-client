@@ -12,6 +12,7 @@ import {
 	MdOutlineAddCircle,
 	MdOutlineVisibility,
 } from 'react-icons/md'
+import { BsShop } from 'react-icons/bs'
 const AdminDashboard = () => {
 	const user = useSelector((state) => state.auth.user)
 	const isLoggedIn = useSelector((state) => state.auth.loggedIn)
@@ -44,8 +45,12 @@ const AdminDashboard = () => {
 									<MdOutlineAddCircle size={25} />
 									&emsp;Add Product
 								</ListGroup.Item>
-							</ListGroup>
-							<ListGroup>
+								<ListGroup.Item
+									style={{ cursor: 'pointer' }}
+									onClick={() => navigate(`/${user._id}/products`)}>
+									<BsShop size={25} />
+									&emsp;All Products
+								</ListGroup.Item>
 								<ListGroup.Item
 									style={{ cursor: 'pointer' }}
 									onClick={() => navigate(`/${user._id}/orders`)}>
