@@ -12,23 +12,25 @@ const HomePage = () => {
 	const getProductsByArrival = () => {
 		axios
 			.get('/products?sortBy=createdAt&order=desc&limit=6')
-			.then((response) => setNewArrivals(response.data))
+			.then((response) => {
+				setNewArrivals(response.data)
+			})
 			.catch((error) => console.log(error))
 	}
 	const getProductsBySold = () => {
 		axios
 			.get('/products?sortBy=sold&order=desc&limit=6')
-			.then((response) => setMostSelling(response.data))
+			.then((response) => {
+				setMostSelling(response.data)
+				setLoading(false)
+			})
 			.catch((error) => console.log(error))
 	}
 	useEffect(() => {
 		getProductsByArrival()
 		getProductsBySold()
 	}, [])
-	useEffect(() => {
-		if (newArrivals && mostSelling) setLoading(false)
-		else setLoading(true)
-	}, [newArrivals, mostSelling])
+
 	return (
 		<Fragment>
 			<TitleHeader title='BizBook.io' description='Home page ' />

@@ -19,7 +19,7 @@ export const authSlice = createSlice({
 			state.user = null
 			state.token = null
 			state.loggedIn = false
-			localStorage.clear()
+			localStorage.removeItem('auth')
 		},
 		updateUser: (state, action) => {
 			state.user.name = action.payload

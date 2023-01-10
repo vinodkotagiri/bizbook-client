@@ -28,15 +28,11 @@ const UserDashboard = () => {
 								<h3>Actions</h3>
 							</Card.Header>
 							<ListGroup variant='flush'>
-								<ListGroup.Item
-									style={{ cursor: 'pointer' }}
-									onClick={() => navigate('/')}>
+								<ListGroup.Item style={{ cursor: 'pointer' }} onClick={() => navigate('/cart')}>
 									<FaShoppingCart size={25} />
 									&emsp;My Cart
 								</ListGroup.Item>
-								<ListGroup.Item
-									style={{ cursor: 'pointer' }}
-									onClick={() => navigate(`/update/${user._id}`)}>
+								<ListGroup.Item style={{ cursor: 'pointer' }} onClick={() => navigate(`/update/${user._id}`)}>
 									<FaUserEdit size={25} />
 									&emsp;Update Profile
 								</ListGroup.Item>
@@ -88,9 +84,7 @@ const UserDashboard = () => {
 																<td className='text-muted'>
 																	<Link to={`/product/${p._id}`}>{p._id}</Link>
 																</td>
-																<td className='text-muted'>
-																	{p.transaction_id}
-																</td>
+																<td className='text-muted'>{p.transaction_id}</td>
 																<td className='text-muted'>{p.quantity}</td>
 															</tr>
 														</tbody>
